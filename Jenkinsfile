@@ -69,24 +69,23 @@ pipeline {
 			}
 			
 			
-	         // Test Stages
-// 	        stage('Perform Tests') {
-// 	            steps {
-// 	                echo 'Testing the workflow...'
-// 					UiPathTest (
-// 					  testTarget: [$class: 'TestSetEntry', testSet: "AnnounceFavouriteSinger_Tests"],
-// 					  orchestratorAddress: "${UIPATH_ORCH_URL}",
-// 					  orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}",
-// 					  folderName: "${UIPATH_ORCH_FOLDER_NAME}",
-// 					  timeout: 10000,
-// 					  traceLevel: 'None',
-// 					  testResultsOutputPath: "result.xml",
-// 					  //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: "credentialsId"]
-// 					  credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),
-// 					  parametersFilePath: ''
-// 					)
-// 	            }
-// 			}
+	         // Email Notification before PROD Deployment
+ 	        stage('Email Notification') {
+ 	            steps {
+ 	                echo 'Testing the workflow...'
+			mail bcc: '', body: '''Hi,
+
+			Process Test case deployed and Production Environment deployment started.
+
+			$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:
+			Check console output at $BUILD_URL to view the results.
+
+			Thanks and Regards,
+			S.Purushothaman
+			RPA Developer''', cc: '', from: '', replyTo: '', subject: 'Jenkins Process Deployment Notification', to: 'srmp24@gmail.com'
+					
+ 	            }
+ 			}
 				
 	         // Building Package
 	        stage('Build Process') {
